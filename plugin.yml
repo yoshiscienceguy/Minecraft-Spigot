@@ -1,0 +1,6 @@
+name: MinecraftSpigot
+main: main.game.MainGame
+version: 1.0
+author: fern
+commands:
+  Hello:
