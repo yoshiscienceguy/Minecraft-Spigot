@@ -4,3 +4,5 @@ version: 1.0
 author: fern
 commands:
   Hello:
+  Sword:
+  Make:

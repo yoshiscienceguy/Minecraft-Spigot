@@ -5,29 +5,17 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 
-public class Main extends JavaPlugin{
+public class MainGame extends JavaPlugin{
 	
 	@Override
-    public void onPlayerMove(PlayerMoveEvent event) {
-		super onPlayerMove();
-		if (event.isCancelled()) {
-            return;
-            
-        }
-		Player player = event.getPlayer();
-		Location loc = player.getLocation();
-		loc.setY(loc.getY()-1);
-		if(loc.getBlock().getType().equals(Material.GRASS_BLOCK)){
-		//CODE HERE
-			player.sendMessage("stepping on grass");
-		}
+	public void onEnable() {
+		getServer().getPluginManager().registerEvents(new PlayerMove(), this);
+		
 	}
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args )
 	{
@@ -49,6 +37,27 @@ public class Main extends JavaPlugin{
 				player.getInventory().addItem(item);
 				
 
+				return true;
+				
+			}
+			
+		}
+		else if(label.equalsIgnoreCase("make")) {
+			if(sender instanceof Player) {
+				Player player = (Player) sender;
+				Location loc = player.getLocation();
+				for(int x = 0; x < 100; x++) {
+					for(int y = 0; y< 100; y++) {
+						for(int z = 0; z<100; z++)
+						{
+							loc.add(loc.getX()+x,loc.getY()+y,loc.getZ()+z);
+							loc.getBlock().setType(Material.AIR);
+							loc.getBlock().getState().update();
+						}
+					}
+					
+					
+				}
 				return true;
 				
 			}
