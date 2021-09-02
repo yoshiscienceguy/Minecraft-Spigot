@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 
 public class MainGame extends JavaPlugin{
@@ -46,13 +47,13 @@ public class MainGame extends JavaPlugin{
 			if(sender instanceof Player) {
 				Player player = (Player) sender;
 				Location loc = player.getLocation();
+				World targetWorld = loc.getWorld();
 				for(int x = 0; x < 100; x++) {
 					for(int y = 0; y< 100; y++) {
 						for(int z = 0; z<100; z++)
 						{
-							loc.add(loc.getX()+x,loc.getY()+y,loc.getZ()+z);
-							loc.getBlock().setType(Material.AIR);
-							loc.getBlock().getState().update();
+							
+							targetWorld.getBlockAt(loc.getBlockX()+x,loc.getBlockY()+y,loc.getBlockZ()+z).setType(Material.AIR);
 						}
 					}
 					
