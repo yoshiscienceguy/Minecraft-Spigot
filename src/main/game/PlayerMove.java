@@ -9,8 +9,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 public class PlayerMove implements Listener {
 	@EventHandler
     public void onPlayerMove (PlayerMoveEvent event) {
+		Vars info;
 		
-
 		Player player = event.getPlayer();
 		Location loc = player.getLocation();
 		loc.setY(loc.getY()-1);
@@ -18,8 +18,7 @@ public class PlayerMove implements Listener {
 		String blockName = loc.getBlock().getType().toString();
 
 		if(blockName.equals("GRASS")) {
-			player.sendMessage("Stepped on Grass");
-			
+		
 		}
 		
 

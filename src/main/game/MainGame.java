@@ -6,18 +6,34 @@ import org.bukkit.command.CommandSender;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.EventListener;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 
 public class MainGame extends JavaPlugin{
-	
+
+	private String steps;
 	@Override
 	public void onEnable() {
 		getServer().getPluginManager().registerEvents(new PlayerMove(), this);
 		
 	}
+	
+	public MainGame() {
+		steps = "false";
+		
+	}
+	public String isSteped() {
+        return steps;
+    }
+	public void setStarted(final String started) {
+        this.steps = started;
+    }
+
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args )
 	{
 		if(label.equalsIgnoreCase("hello")) {
@@ -48,12 +64,27 @@ public class MainGame extends JavaPlugin{
 				Player player = (Player) sender;
 				Location loc = player.getLocation();
 				World targetWorld = loc.getWorld();
-				for(int x = 0; x < 100; x++) {
-					for(int y = 0; y< 100; y++) {
-						for(int z = 0; z<100; z++)
+				
+				int width = Integer.parseInt(args[0]);
+				int length = Integer.parseInt(args[1]);
+				int height = Integer.parseInt(args[2]);
+				
+				int middleWidth = width / 2;
+				int middleLength = length /2 ;
+				int middleHeight = height /2 ;
+				
+				for(int x = 0; x < width; x++) {
+					for(int y = 0; y< length; y++) {
+						for(int z = 0; z<height; z++)
 						{
+							if(y == 0) {
+								
+								targetWorld.getBlockAt(loc.getBlockX()+x - middleWidth,loc.getBlockY()+y - middleLength,loc.getBlockZ()+z - middleHeight).setType(Material.GRASS_BLOCK);
+							}
+							else {
+								targetWorld.getBlockAt(loc.getBlockX()+x - middleWidth,loc.getBlockY()+y - middleLength,loc.getBlockZ()+z - middleHeight).setType(Material.AIR);
+							}
 							
-							targetWorld.getBlockAt(loc.getBlockX()+x,loc.getBlockY()+y,loc.getBlockZ()+z).setType(Material.AIR);
 						}
 					}
 					
@@ -64,6 +95,7 @@ public class MainGame extends JavaPlugin{
 			}
 			
 		}
+		else if()
 		return false;
 	}
 
