@@ -7,8 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.EventListener;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -16,26 +14,19 @@ import org.bukkit.enchantments.Enchantment;
 
 public class MainGame extends JavaPlugin{
 
-	private String steps;
+	public PlayerMove pm;
 	@Override
 	public void onEnable() {
-		getServer().getPluginManager().registerEvents(new PlayerMove(), this);
+		pm = new PlayerMove();
+		getServer().getPluginManager().registerEvents(pm, this);
 		
 	}
-	
-	public MainGame() {
-		steps = "false";
-		
-	}
-	public String isSteped() {
-        return steps;
-    }
-	public void setStarted(final String started) {
-        this.steps = started;
-    }
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args )
 	{
+		if(label.equalsIgnoreCase("steps")) {
+			pm.canStep = !pm.canStep;
+		}
 		if(label.equalsIgnoreCase("hello")) {
 			if(sender instanceof Player) {
 				Player player = (Player) sender;
@@ -95,7 +86,6 @@ public class MainGame extends JavaPlugin{
 			}
 			
 		}
-		else if()
 		return false;
 	}
 
