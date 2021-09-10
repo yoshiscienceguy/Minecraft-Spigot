@@ -1,5 +1,7 @@
 package main.game;
 
+import java.util.Random;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -14,6 +16,14 @@ public class PlayerMove implements Listener {
 	@EventHandler
     public void onPlayerMove (PlayerMoveEvent event) {
 	
+		Material[] wools = {Material.BLACK_WOOL,
+							Material.BLUE_WOOL,
+							Material.BROWN_WOOL,
+							Material.CYAN_WOOL
+							};
+		int rnd = new Random().nextInt(wools.length);
+		
+		Material rWool = wools[rnd];
 		
 		Player player = event.getPlayer();
 		Location loc = player.getLocation();
@@ -23,7 +33,7 @@ public class PlayerMove implements Listener {
 		//String blockName = loc.getBlock().getType().toString();
 
 		if(canStep) {
-			targetWorld.getBlockAt(loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()).setType(Material.GRASS_BLOCK);
+			targetWorld.getBlockAt(loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()).setType(rWool);
 		}
 		
 

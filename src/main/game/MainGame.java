@@ -1,12 +1,15 @@
 package main.game;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -86,6 +89,52 @@ public class MainGame extends JavaPlugin{
 			}
 			
 		}
+		else if(label.equalsIgnoreCase("arena")) {
+			if(sender instanceof Player) {
+				Player player = (Player) sender;
+				Location loc = player.getLocation();
+				World targetWorld = loc.getWorld();
+				player.sendTitle("Welcome, " + ChatColor.AQUA + player.getDisplayName(),"yoyo", 10, 70, 20); 
+		        player.spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent("Test"));
+
+				for(int x = 0; x < 40; x++) {
+						for(int z = 0; z<40; z++)
+						{
+							if(x < 20) {
+								if(z < 20) {
+									targetWorld.getBlockAt(loc.getBlockX()+x - 20,loc.getBlockY(),loc.getBlockZ()+z - 20).setType(Material.GREEN_WOOL);
+								}
+								else if(z > 20) {
+									
+									targetWorld.getBlockAt(loc.getBlockX()+x - 20,loc.getBlockY(),loc.getBlockZ()+z - 20).setType(Material.RED_WOOL);
+								}
+								else {
+									targetWorld.getBlockAt(loc.getBlockX()+x - 20,loc.getBlockY(),loc.getBlockZ()+z - 20).setType(Material.BLACK_WOOL);
+								}
+							}
+							else if(x > 20) {
+								if(z < 20) {
+									targetWorld.getBlockAt(loc.getBlockX()+x - 20,loc.getBlockY(),loc.getBlockZ()+z - 20).setType(Material.BLUE_WOOL);
+								}
+								else if(z > 20) {
+									
+									targetWorld.getBlockAt(loc.getBlockX()+x - 20,loc.getBlockY(),loc.getBlockZ()+z - 20).setType(Material.YELLOW_WOOL);
+								}
+								else {
+									targetWorld.getBlockAt(loc.getBlockX()+x - 20,loc.getBlockY(),loc.getBlockZ()+z - 20).setType(Material.BLACK_WOOL);
+								}
+							}
+							else {
+								targetWorld.getBlockAt(loc.getBlockX()+x - 20,loc.getBlockY(),loc.getBlockZ()+z - 20).setType(Material.BLACK_WOOL);
+							}
+						}
+					}
+					
+					
+				}
+				return true;
+				
+			}
 		return false;
 	}
 
