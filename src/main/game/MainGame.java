@@ -9,7 +9,6 @@ import org.bukkit.command.CommandSender;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,6 +18,7 @@ import org.bukkit.enchantments.Enchantment;
 public class MainGame extends JavaPlugin{
 	private static MainGame instance;
 	public PlayerMove pm;
+	public SimonSays game;
 	@Override
 	public void onEnable() {
 		instance = this;
@@ -94,6 +94,17 @@ public class MainGame extends JavaPlugin{
 			}
 			
 		}
+		else if(label.equalsIgnoreCase("arenastop")) {
+			if(sender instanceof Player) {
+				
+				Player player = (Player) sender;
+				
+				if (!player.isOp()) {
+					return false;
+				}
+				game.stopGame();
+			}
+		}
 		else if(label.equalsIgnoreCase("arena")) {
 			if(sender instanceof Player) {
 				
@@ -104,32 +115,15 @@ public class MainGame extends JavaPlugin{
 				}
 				
 				Location loc = player.getLocation();
-				World targetWorld = loc.getWorld();
-				
-				
 				
 				player.sendTitle(ChatColor.AQUA +"Simon Says...","Get Ready!", 10, 70, 20); 
 		        player.spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent("Get Ready!"));
 		        
-		        SimonSays game = new SimonSays(loc);
-				game.resetArena();
+		        game = new SimonSays(loc,getInstance());
+				game.startGame();
 				// Defiantly gonna use lambda, or this would look reaaalllly bad
 				
-				CountdownTimer timer = new CountdownTimer(getInstance(),
-				        10,
-				        () -> Bukkit.broadcastMessage(ChatColor.YELLOW + "Timer is commencing. Get ready!"),
-				        () -> {
-				            Bukkit.broadcastMessage(ChatColor.YELLOW + "Timer is up!");
-				            
-							game.setLavaBlocks();
-				        },
-				        (t) -> {Bukkit.broadcastMessage(ChatColor.YELLOW + "Time left: " + (t.getSecondsLeft()) + "/" + (t.getTotalSeconds()) + " seconds");
-						        }
-
-				);
-
-				// Start scheduling, don't use the "run" method unless you want to skip a second
-				timer.scheduleTimer();
+				
 				
 				
 					
