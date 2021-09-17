@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,15 +17,19 @@ import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 
 public class MainGame extends JavaPlugin{
-
+	private static MainGame instance;
 	public PlayerMove pm;
 	@Override
 	public void onEnable() {
+		instance = this;
 		pm = new PlayerMove();
 		getServer().getPluginManager().registerEvents(pm, this);
 		
 	}
-
+	public static MainGame getInstance() {
+		return instance;
+	}
+	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args )
 	{
 		if(label.equalsIgnoreCase("steps")) {
@@ -91,45 +96,42 @@ public class MainGame extends JavaPlugin{
 		}
 		else if(label.equalsIgnoreCase("arena")) {
 			if(sender instanceof Player) {
+				
 				Player player = (Player) sender;
+				
+				if (!player.isOp()) {
+					return false;
+				}
+				
 				Location loc = player.getLocation();
 				World targetWorld = loc.getWorld();
-				player.sendTitle("Welcome, " + ChatColor.AQUA + player.getDisplayName(),"yoyo", 10, 70, 20); 
-		        player.spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent("Test"));
+				
+				
+				
+				player.sendTitle(ChatColor.AQUA +"Simon Says...","Get Ready!", 10, 70, 20); 
+		        player.spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent("Get Ready!"));
+		        
+		        SimonSays game = new SimonSays(loc);
+				game.resetArena();
+				// Defiantly gonna use lambda, or this would look reaaalllly bad
+				
+				CountdownTimer timer = new CountdownTimer(getInstance(),
+				        10,
+				        () -> Bukkit.broadcastMessage(ChatColor.YELLOW + "Timer is commencing. Get ready!"),
+				        () -> {
+				            Bukkit.broadcastMessage(ChatColor.YELLOW + "Timer is up!");
+				            
+							game.setLavaBlocks();
+				        },
+				        (t) -> {Bukkit.broadcastMessage(ChatColor.YELLOW + "Time left: " + (t.getSecondsLeft()) + "/" + (t.getTotalSeconds()) + " seconds");
+						        }
 
-				for(int x = 0; x < 40; x++) {
-						for(int z = 0; z<40; z++)
-						{
-							if(x < 20) {
-								if(z < 20) {
-									targetWorld.getBlockAt(loc.getBlockX()+x - 20,loc.getBlockY(),loc.getBlockZ()+z - 20).setType(Material.GREEN_WOOL);
-								}
-								else if(z > 20) {
-									
-									targetWorld.getBlockAt(loc.getBlockX()+x - 20,loc.getBlockY(),loc.getBlockZ()+z - 20).setType(Material.RED_WOOL);
-								}
-								else {
-									targetWorld.getBlockAt(loc.getBlockX()+x - 20,loc.getBlockY(),loc.getBlockZ()+z - 20).setType(Material.BLACK_WOOL);
-								}
-							}
-							else if(x > 20) {
-								if(z < 20) {
-									targetWorld.getBlockAt(loc.getBlockX()+x - 20,loc.getBlockY(),loc.getBlockZ()+z - 20).setType(Material.BLUE_WOOL);
-								}
-								else if(z > 20) {
-									
-									targetWorld.getBlockAt(loc.getBlockX()+x - 20,loc.getBlockY(),loc.getBlockZ()+z - 20).setType(Material.YELLOW_WOOL);
-								}
-								else {
-									targetWorld.getBlockAt(loc.getBlockX()+x - 20,loc.getBlockY(),loc.getBlockZ()+z - 20).setType(Material.BLACK_WOOL);
-								}
-							}
-							else {
-								targetWorld.getBlockAt(loc.getBlockX()+x - 20,loc.getBlockY(),loc.getBlockZ()+z - 20).setType(Material.BLACK_WOOL);
-							}
-						}
-					}
-					
+				);
+
+				// Start scheduling, don't use the "run" method unless you want to skip a second
+				timer.scheduleTimer();
+				
+				
 					
 				}
 				return true;
