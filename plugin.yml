@@ -4,8 +4,11 @@ version: 1.0
 author: fern
 commands:
   Hello:
-  Sword:
-  Make:
-  Steps:
-  Arena:
-  Arenastop:
+  bow:
+  op_sword:
+  god_apple:
+  pickaxe:
+  clear_world:
+  canwalk:
+  arena:
+  arenastop: 

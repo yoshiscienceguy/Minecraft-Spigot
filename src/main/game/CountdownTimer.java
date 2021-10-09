@@ -4,8 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Consumer;
 
-public class CountdownTimer implements Runnable{
-
+public class CountdownTimer implements Runnable {
 	private JavaPlugin plugin;
 	private Integer assignedTaskId;
 	
@@ -61,6 +60,5 @@ public class CountdownTimer implements Runnable{
 	        // Initialize our assigned task's id, for later use so we can cancel
 	        this.assignedTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this, 0L, 20L);
 	 }
-} 
-	
+}
 
